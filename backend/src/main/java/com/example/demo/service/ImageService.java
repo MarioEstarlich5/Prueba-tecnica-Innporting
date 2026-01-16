@@ -6,6 +6,7 @@ import com.example.demo.repository.FlickrRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
+import com.example.demo.exception.ApiException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +45,7 @@ public class ImageService {
             return images;
 
         } catch (Exception e) {
-            throw new RuntimeException("Error processing Flickr search response", e);
+            throw new ApiException("Error al buscar imágenes en Flickr");
         }
     }
 
@@ -75,7 +76,7 @@ public class ImageService {
             return dto;
 
         } catch (Exception e) {
-            throw new RuntimeException("Error processing Flickr detail response", e);
+            throw new ApiException("Error al buscar imágenes en Flickr");
         }
     }
 }
