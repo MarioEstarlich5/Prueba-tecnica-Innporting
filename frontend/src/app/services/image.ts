@@ -11,8 +11,14 @@ export class ImageService {
 
   constructor(private http: HttpClient) {}
 
-  searchImages(text: string): Observable<any> {
-    return this.http.get<any>(`${this.API_URL}/search?text=${text}`);
+  searchImages(query: string, page: number = 0, size: number = 10): Observable<any> {
+    return this.http.get<any>(`${this.API_URL}/search`, {
+      params: {
+        query: query,
+        page: page,
+        size: size
+      }
+    });
   }
 
   getImageDetail(id: string): Observable<any> {

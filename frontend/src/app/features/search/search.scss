@@ -1,0 +1,17 @@
+.search-container {
+    display: flex;
+    gap: 16px;
+    margin: 20px;
+  }
+  
+  .search-input {
+    width: 300px;
+  }
+  
+  .image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin: 20px;
+  }
+  

@@ -1,0 +1,24 @@
+<div class="search-container">
+    <mat-form-field appearance="outline" class="search-input">
+      <mat-label>Buscar imágenes</mat-label>
+      <input matInput [(ngModel)]="query" />
+    </mat-form-field>
+  
+    <button mat-raised-button color="primary" (click)="search()">
+      Buscar
+    </button>
+  </div>
+  
+  <div *ngIf="loading">Cargando...</div>
+  
+  <div class="image-grid">
+    <mat-card *ngFor="let image of images; let i = index">
+      <img mat-card-image [src]="image.imageUrl" />
+      <mat-card-actions>
+        <button mat-button color="warn" (click)="removeImage(i)">
+          Eliminar
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  
