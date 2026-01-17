@@ -1,24 +1,45 @@
 <div class="search-container">
-    <mat-form-field appearance="outline" class="search-input">
-      <mat-label>Buscar imágenes</mat-label>
-      <input matInput [(ngModel)]="query" />
-    </mat-form-field>
-  
-    <button mat-raised-button color="primary" (click)="search()">
-      Buscar
-    </button>
-  </div>
-  
-  <div *ngIf="loading">Cargando...</div>
-  
-  <div class="image-grid">
-    <mat-card *ngFor="let image of images; let i = index">
-      <img mat-card-image [src]="image.imageUrl" />
-      <mat-card-actions>
-        <button mat-button color="warn" (click)="removeImage(i)">
-          Eliminar
-        </button>
-      </mat-card-actions>
-    </mat-card>
-  </div>
-  
+  <mat-form-field appearance="outline" class="search-input">
+    <mat-label>Buscar imágenes</mat-label>
+    <input
+      matInput
+      [(ngModel)]="query"
+      (keyup.enter)="search()"
+    />
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="search()">
+    Buscar
+  </button>
+</div>
+
+<div *ngIf="loading">Cargando...</div>
+
+<div class="image-grid">
+  <mat-card
+    *ngFor="let image of images; let i = index"
+    (click)="goToDetail(image.id)"
+    style="cursor: pointer"
+  >
+    <img mat-card-image [src]="image.thumbnailUrl" [alt]="image.title" />
+
+    <mat-card-content>
+      <h3>{{ image.title }}</h3>
+      <p>{{ image.author }}</p>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button
+        mat-button
+        color="warn"
+        (click)="removeImage(i, $event)"
+      >
+        Eliminar
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+<div *ngIf="isLoadingMore && !loading">
+  Cargando más imágenes...
+</div>

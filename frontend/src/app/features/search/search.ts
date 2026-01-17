@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
-import { ImageService } from '../../services/image';
+import { Component, ChangeDetectorRef, HostListener } from '@angular/core';
+import { ImageService, Image } from '../../services/image';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-search',
@@ -22,43 +23,76 @@ import { MatCardModule } from '@angular/material/card';
 export class SearchComponent {
 
   query = '';
-  images: any[] = [];
+  images: Image[] = [];
   loading = false;
+  isLoadingMore = false;
+  page = 1;
+  totalPages = 1;
 
-  currentPage = 0;
-  pageSize = 10;
-
-  constructor(private imageService: ImageService) {}
+  constructor(
+    private imageService: ImageService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   search(): void {
     if (!this.query) return;
 
-    this.loading = true;
-    this.currentPage = 0;
+    this.page = 1;
     this.images = [];
-
     this.loadPage();
   }
 
-  loadPage(): void {
-    this.imageService.searchImages(this.query, this.currentPage, this.pageSize).subscribe({
+  private loadPage(): void {
+    if (this.loading || this.isLoadingMore) return;
+
+    const firstPage = this.page === 1;
+
+    if (firstPage) {
+      this.loading = true;
+    } else {
+      this.isLoadingMore = true;
+    }
+    this.cdr.detectChanges();
+
+    this.imageService.searchImages(this.query, this.page, 10).subscribe({
       next: (response) => {
-        this.images.push(...response);
+        this.images = [...this.images, ...response.images];
+        this.totalPages = response.totalPages;
+
         this.loading = false;
+        this.isLoadingMore = false;
+        this.cdr.detectChanges();
       },
       error: () => {
-        alert('Error searching images');
         this.loading = false;
+        this.isLoadingMore = false;
+        this.cdr.detectChanges();
       }
     });
   }
 
-  loadMore(): void {
-    this.currentPage++;
-    this.loadPage();
+  @HostListener('window:scroll', [])
+  onScroll(): void {
+    const threshold = 300;
+    const position = window.innerHeight + window.scrollY;
+    const height = document.body.offsetHeight;
+
+    if (position + threshold >= height) {
+      if (this.page < this.totalPages && !this.isLoadingMore && !this.loading) {
+        this.page++;
+        this.loadPage();
+      }
+    }
   }
 
-  removeImage(index: number): void {
+  removeImage(index: number, event: Event): void {
+    event.stopPropagation();
     this.images.splice(index, 1);
+    this.cdr.detectChanges();
+  }
+
+  goToDetail(id: string): void {
+    this.router.navigate(['/image', id]);
   }
 }

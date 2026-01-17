@@ -1,11 +1,9 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.ImageDetailDto;
-import com.example.demo.dto.ImageDto;
+import com.example.demo.dto.SearchResponseDto;
 import com.example.demo.service.ImageService;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/images")
@@ -19,7 +17,7 @@ public class ImageController {
     }
 
     @GetMapping("/search")
-    public List<ImageDto> searchImages(
+    public SearchResponseDto searchImages(
             @RequestParam String query,
             @RequestParam int page,
             @RequestParam int size

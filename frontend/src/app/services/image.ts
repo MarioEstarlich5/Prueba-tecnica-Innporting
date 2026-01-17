@@ -2,6 +2,20 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+export interface Image {
+  id: string;
+  title: string;
+  thumbnailUrl: string;
+  imageUrl: string;
+  author: string;
+}
+
+export interface SearchResponse {
+  page: number;
+  totalPages: number;
+  images: Image[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -11,8 +25,8 @@ export class ImageService {
 
   constructor(private http: HttpClient) {}
 
-  searchImages(query: string, page: number = 0, size: number = 10): Observable<any> {
-    return this.http.get<any>(`${this.API_URL}/search`, {
+  searchImages(query: string, page: number = 1, size: number = 10): Observable<SearchResponse> {
+    return this.http.get<SearchResponse>(`${this.API_URL}/search`, {
       params: {
         query: query,
         page: page,

@@ -1,0 +1,19 @@
+<div class="detail-container" *ngIf="image">
+
+  <img [src]="image.imageUrl" class="detail-image" />
+
+  <h2>{{ image.title }}</h2>
+  <p><strong>Autor:</strong> {{ image.author }}</p>
+  <p><strong>Descripción:</strong> {{ image.description }}</p>
+  <p><strong>Tags:</strong> {{ image.tags }}</p>
+  <p><strong>Resolución:</strong> {{ image.width }} x {{ image.height }}</p>
+
+  <button mat-raised-button color="primary" (click)="download()">
+    Descargar imagen
+  </button>
+
+  <button mat-button (click)="back()">
+    Volver
+  </button>
+
+</div>
