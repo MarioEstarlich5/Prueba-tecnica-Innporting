@@ -35,17 +35,20 @@ export class DetailComponent implements OnInit {
     const url = this.image.downloadUrl;
     const filename = this.image.title || 'imagen';
   
-    const newTab = window.open(url, '_blank');
-    if (!newTab) return;
-  
-    newTab.onload = () => {
-      const link = newTab.document.createElement('a');
-      link.href = url;
-      link.download = filename;
-      newTab.document.body.appendChild(link);
-      link.click();
-    };
+    fetch(url)
+      .then(res => res.blob())
+      .then(blob => {
+        const blobUrl = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.download = filename + '.jpg';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(blobUrl);
+      });
   }
+  
 
   back(): void {
     this.router.navigate(['/search']);
