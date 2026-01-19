@@ -1,7 +1,8 @@
-package com.example.demo.repository;
+package com.example.demo.infrastructure.flickr;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
+public class FlickrRepository implements ImageRepositoryPort
 
 @Repository
 public class FlickrRepository {

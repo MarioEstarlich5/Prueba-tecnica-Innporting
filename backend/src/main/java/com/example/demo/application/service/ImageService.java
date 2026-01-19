@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.application.service;
 
 import com.example.demo.dto.ImageDetailDto;
 import com.example.demo.dto.ImageDto;

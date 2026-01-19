@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.demo.infrastructure.web;
 
 import com.example.demo.dto.ImageDetailDto;
 import com.example.demo.dto.SearchResponseDto;
@@ -29,4 +29,27 @@ public class ImageController {
     public ImageDetailDto getImageDetail(@PathVariable String id) {
         return imageService.getImageDetail(id);
     }
+
+    @GetMapping("/download/{id}")
+public ResponseEntity<byte[]> downloadImage(@PathVariable String id) {
+    ImageDetailDto detail = imageService.getImageDetail(id);
+
+    try {
+        URL url = new URL(detail.getDownloadUrl());
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        try (InputStream is = url.openStream()) {
+            is.transferTo(baos);
+        }
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + detail.getTitle() + ".jpg\"")
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(baos.toByteArray());
+
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+}
+
 }
