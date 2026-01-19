@@ -29,6 +29,7 @@ export class SearchComponent {
   page = 1;
   totalPages = 1;
 
+  hasSearched = false;
   constructor(
     private imageService: ImageService,
     private router: Router,
@@ -37,6 +38,8 @@ export class SearchComponent {
 
   search(): void {
     if (!this.query) return;
+
+    this.hasSearched = true; 
 
     this.page = 1;
     this.images = [];

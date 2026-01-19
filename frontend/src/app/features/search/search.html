@@ -15,7 +15,14 @@
 
 <div *ngIf="loading">Cargando...</div>
 
-<div class="image-grid">
+<!-- Imagen estática inicial -->
+<div *ngIf="!hasSearched && !loading" class="placeholder-container">
+  <img src="assets/logo.png" class="placeholder-image" />
+  <p class="placeholder-text">Busca imágenes para empezar</p>
+</div>
+
+<!-- Grid de imágenes -->
+<div *ngIf="hasSearched" class="image-grid">
   <mat-card
     *ngFor="let image of images; let i = index"
     (click)="goToDetail(image.id)"
