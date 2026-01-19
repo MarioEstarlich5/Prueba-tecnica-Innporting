@@ -1,17 +1,18 @@
 package com.example.demo.infrastructure.flickr;
 
+import com.example.demo.domain.port.ImageRepositoryPort;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
-public class FlickrRepository implements ImageRepositoryPort
 
 @Repository
-public class FlickrRepository {
+public class FlickrRepository implements ImageRepositoryPort {
 
     private static final String API_KEY = "aa80857dbe0f4136252b8177f378d669";
     private static final String BASE_URL = "https://api.flickr.com/services/rest/";
 
     private final RestTemplate restTemplate = new RestTemplate();
 
+    @Override
     public String searchImages(String query, int page, int size) {
         String url = BASE_URL +
                 "?method=flickr.photos.search" +
@@ -25,6 +26,7 @@ public class FlickrRepository {
         return restTemplate.getForObject(url, String.class);
     }
 
+    @Override
     public String getImageInfo(String id) {
         String url = BASE_URL +
                 "?method=flickr.photos.getInfo" +
@@ -35,6 +37,7 @@ public class FlickrRepository {
         return restTemplate.getForObject(url, String.class);
     }
 
+    @Override
     public String getImageSizes(String id) {
         String url = BASE_URL +
                 "?method=flickr.photos.getSizes" +

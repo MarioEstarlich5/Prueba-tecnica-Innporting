@@ -4,9 +4,11 @@ import com.example.demo.dto.ImageDetailDto;
 import com.example.demo.dto.ImageDto;
 import com.example.demo.dto.SearchResponseDto;
 import com.example.demo.exception.ApiException;
-import com.example.demo.repository.FlickrRepository;
+import com.example.demo.infrastructure.flickr.FlickrRepository;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
